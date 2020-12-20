@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat room</title>
+    <script src="sockjs-0.3.4.js"></script>
+    <script src="stomp.js"></script>
+    <script type="text/javascript">
+        var stompClient = null;
+        var randomnumber=Math.floor(Math.random()*10001);
+
+        function setIsJoined(isJoined) {
+            document.getElementById('joinChatroom').disabled = isJoined;
+            document.getElementById('signOut').disabled = !isJoined;
+            document.getElementById('conversationDiv').style.visibility = isJoined ? 'visible' : 'hidden';
+            document.getElementById('response').innerHTML = '';
+        }
+        
+        function joinChatroom() {
+            var topic='/chatroomTopic/broadcastClientsMessages';
+            var servicePath='/broadcastMyMessage';
+            var socket = new SockJS(servicePath);
+            stompClient = Stomp.over(socket);            
+            stompClient.connect('user','password', function(frame) {
+                setIsJoined(true);
+                console.log('Joined Chatroom: ' + frame);
+                stompClient.subscribe(topic, function(serverReturnedData){
+                    renderServerReturnedData(JSON.parse(serverReturnedData.body).returnedMessage);
+                });
+            });
+        }
+
+        function signOut() {
+            if (stompClient != null) {
+                stompClient.disconnect();
+            }
+            setIsJoined(false);
+            console.log("Signed Out");
+        }
+        
+        function sendMyClientMessage() {
+            var serviceFullPath='/myApp/broadcastMyMessage';
+            var myText = document.getElementById('myText').value;
+            stompClient.send(serviceFullPath, {}, JSON.stringify({ 'clientName': 'Client-'+randomnumber, 'clientMessage':myText}));
+            document.getElementById('myText').value='';
+        }
+        
+        function renderServerReturnedData(message) {
+            var response = document.getElementById('response');
+            var p = document.createElement('p');
+            p.style.wordWrap = 'break-word';
+            if(message.indexOf(randomnumber)!=-1){
+              message=message.replace('Client-'+randomnumber,'Me');
+              p.style.color='blue';
+            }
+            p.appendChild(document.createTextNode(message));
+            response.appendChild(p);
+        }
+        function setClientName(){
+           document.getElementById('clientName').innerHTML='Client-'+randomnumber;
+        };
+    </script>
+</head>
+<body onload="signOut();setClientName();">
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+Your client id:<span id="clientName"></span><br/>
+    <div>
+
+        <button id="joinChatroom" onclick="joinChatroom();">Join chatroom</button>
+        <button id="signOut" disabled="disabled" onclick="signOut();">Sign Out</button>
+    </div>
+<br/>
+    <div id="conversationDiv">
+        <label >Type your message and click to send:</label><br/>
+        <textarea  id="myText" cols="50" rows="4"></textarea><br/>
+        <button id="myClientMessage" onclick="sendMyClientMessage();">Send</button><br/>
+        -------------------------------------------------------------
+        <p id="response"></p>
+    </div>
+</div>
+</body>
+</html>

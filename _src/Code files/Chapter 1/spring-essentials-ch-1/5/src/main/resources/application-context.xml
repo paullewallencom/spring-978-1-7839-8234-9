@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<context:component-scan base-package="com.springessentialsbook" />
+
+	<aop:aspectj-autoproxy />
+
+	<bean id="xmlTaskService"
+		class="com.springessentialsbook.chapter1.service.impl.XmlDefinedTaskService"
+		init-method="init" destroy-method="cleanup">
+		<constructor-arg ref="userService" />
+		<constructor-arg>
+			<bean class="com.springessentialsbook.chapter1.dao.impl.TaskInMemoryDAO"></bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="taskService"
+		class="com.springessentialsbook.chapter1.service.impl.SimpleTaskService">
+		<constructor-arg ref="userService" />
+		<constructor-arg ref="taskDAO" />
+	</bean>
+	<!-- <bean id="taskService" class="com.springessentialsbook.chapter1.service.impl.SimpleTaskService"> 
+		<property name="userService" ref="userService" /> <property name="taskDAO"> 
+		<ref bean="taskDAO"/> </property> </bean> -->
+	<bean id="systemSettings"
+		class="com.springessentialsbook.chapter1.settings.SystemSettings">
+		<!-- <constructor-arg index="0" type="int" value="5"/> <constructor-arg 
+			index="1" type="java.lang.String" value="dd/mm/yyyy"/> <constructor-arg index="2" 
+			type="java.lang.String" value="Taskify!"/> -->
+		<constructor-arg value="5" />
+		<constructor-arg value="dd/mm/yyyy" />
+		<constructor-arg value="Taskify!" />
+		<constructor-arg value="admin@taskify.com" />
+	</bean>
+<!--  
+	<bean id="systemSettings"
+		class="com.springessentialsbook.chapter1.settings.SystemSettings">
+		<property name="openUserTasksMaxLimit" value="5" />
+		<property name="systemDateFormat" value="dd/mm/yyyy" />
+		<property name="appDisplayName" value="Taskify!" />
+	</bean>
+-->
+	<bean id="p-taskService"
+		class="com.springessentialsbook.chapter1.service.impl.SimpleTaskService"
+		c:userService-ref="userService" c:taskDAO-ref="taskDAO" />
+
+<!-- 
+	<bean id="p-systemSettings"
+		class="com.springessentialsbook.chapter1.settings.SystemSettings"
+		p:openUserTasksMaxLimit="5" p:systemDateFormat="dd/mm/yyyy"
+		p:appDisplayName="Taskify!" />
+		-->
+<!-- 
+	<bean id="shoppingCart" class="com...ShoppingCart" scope="session">
+		<aop:scoped-proxy />
+	</bean>
+	<bean id="orderService" class="com...OrderService">
+		<constructor-arg ref="shoppingCart"></constructor-arg>
+	</bean>
+-->
+
+	<aop:config>
+		<aop:aspect id="audLogAspect" ref="auditLoggerAspect">
+
+			<aop:pointcut id="allTaskServicePointCut"
+				expression="execution(* com.springessentialsbook.service.TaskService.*(..))" />
+
+		</aop:aspect>
+	</aop:config>
+	<bean id="auditLoggerAspect" class="com.springessentialsbook.chapter1.aop.AuditLoggerAspect" />
+
+</beans>

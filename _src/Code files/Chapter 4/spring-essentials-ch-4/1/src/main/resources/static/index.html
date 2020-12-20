@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Call Service</title>
+
+<script src="jquery.js"></script>
+<script type="text/javascript">
+
+        var randomnumber=Math.floor(Math.random()*10001);
+        var ws = null;
+
+
+        function setIsJoined(isJoined) {
+            document.getElementById('joinChatroom').disabled = isJoined;
+            document.getElementById('signOut').disabled = !isJoined;
+            document.getElementById('conversationDiv').style.visibility = isJoined ? 'visible' : 'hidden';
+            document.getElementById('response').innerHTML = '';
+        }
+        
+
+
+        function renderServerReturnedData(message) {
+            var response = document.getElementById('response');
+            var p = document.createElement('p');
+            p.style.wordWrap = 'break-word';
+
+            p.appendChild(document.createTextNode(message));
+            response.appendChild(p);
+        }
+
+        function setClientName(){
+           document.getElementById('clientName').innerHTML='Client-'+randomnumber;
+        };
+
+        function openWebSocket(){
+
+             ws = new WebSocket('ws://localhost:8090/path/wsAddress');
+
+             ws.onmessage = function(event){
+                renderServerReturnedData(event.data);
+             };
+
+             ws.onerror = function(event){
+                $('#errDiv').html(event);
+             };
+        }
+
+       function sendMyClientMessage() {
+          var myText = document.getElementById('myText').value;
+          var message=JSON.stringify({ 'clientName': 'Client-'+randomnumber, 'clientMessage':myText});
+          ws.send(message);
+          document.getElementById('myText').value='';
+        }
+
+
+    </script>
+</head>
+<body onload="openWebSocket();setClientName();">
+	<noscript>
+		<h2 style="color: #ff0000">Seems your browser doesn't support
+			Javascript! Websocket relies on Javascript being enabled. Please
+			enable Javascript and reload this page!</h2>
+	</noscript>
+	Your client id:
+	<span id="clientName"></span>
+	<br />
+	<div class="jz" id="errDiv"></div>
+
+	<br />
+	<div id="conversationDiv">
+		<label>Type your message and click to send:</label><br />
+		<textarea id="myText" cols="50" rows="4"></textarea>
+		<br />
+		<button id="myClientMessage" onclick="sendMyClientMessage();">Send</button>
+		<br /> -------------------------------------------------------------
+		<p id="response"></p>
+	</div>
+	</div>
+</body>
+</html>

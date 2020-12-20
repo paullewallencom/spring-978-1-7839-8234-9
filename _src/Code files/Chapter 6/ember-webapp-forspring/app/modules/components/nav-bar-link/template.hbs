@@ -1,0 +1,6 @@
+ {{#link-to routeName}}
+ 	{{yield}} 
+ 	{{#if isCurrentRoute}}
+		<span class="sr-only">(current)</span>
+	{{/if}} 
+{{/link-to}}

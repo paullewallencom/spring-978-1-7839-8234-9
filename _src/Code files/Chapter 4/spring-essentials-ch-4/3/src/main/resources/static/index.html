@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat room</title>
+    <script src="sockjs-0.3.4.js"></script>
+    <script src="stomp.js"></script>
+    <script type="text/javascript">
+        var stompClient = null;
+        var randomnumber=Math.floor(Math.random()*10001);
+
+        function setIsJoined(isJoined) {
+            document.getElementById('connectService').disabled = isJoined;
+            document.getElementById('disconnectService').disabled = !isJoined;
+            document.getElementById('conversationDiv').style.visibility = isJoined ? 'visible' : 'hidden';
+            document.getElementById('response').innerHTML = '';
+        }
+        
+        function connectService() {
+            var servicePath='/message';
+            var socket = new SockJS(servicePath);
+            stompClient = Stomp.over(socket);            
+            stompClient.connect({}, function(frame) {
+
+                setIsJoined(true);
+                stompClient.subscribe('/user/queue/message', function(message) {
+                renderServerReturnedData(message.body);
+	            });
+	            stompClient.subscribe('/user/queue/error', function(message) {
+                    renderReturnedError(message.body);
+                 });
+            });
+        }
+
+        function disconnectService() {
+            if (stompClient != null) {
+                stompClient.disconnect();
+            }
+            setIsJoined(false);
+            console.log("disconnect");
+        }
+        
+        function sendMyClientMessage() {
+            var serviceFullPath='/app/message';
+            var myText = document.getElementById('myText').value;
+            stompClient.send(serviceFullPath, {}, JSON.stringify({ 'clientName': 'Client-'+randomnumber, 'clientMessage':myText}));
+            document.getElementById('myText').value='';
+        }
+        
+        function renderServerReturnedData(message) {
+            var response = document.getElementById('response');
+            var p = document.createElement('p');
+            p.style.wordWrap = 'break-word';
+            p.style.color='blue';
+            p.appendChild(document.createTextNode(message));
+            response.appendChild(p);
+        }
+
+         function renderReturnedError(message) {
+            var response = document.getElementById('response');
+            var p = document.createElement('p');
+            p.style.wordWrap = 'break-word';
+            p.style.color='red';
+            p.appendChild(document.createTextNode(message));
+            response.appendChild(p);
+        }
+
+        function setClientName(){
+           document.getElementById('clientName').innerHTML='Client-'+randomnumber;
+        };
+    </script>
+</head>
+<body onload="disconnectService();setClientName();">
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+Your client id:<span id="clientName"></span><br/>
+    <div>
+
+        <button id="connectService" onclick="connectService();">connect to service</button>
+        <button id="disconnectService" disabled="disabled" onclick="disconnectService();">disconnect service</button>
+    </div>
+<br/>
+    <div id="conversationDiv">
+        <label >Type your message and click to send:</label><br/>
+        <textarea  id="myText" cols="50" rows="4"></textarea><br/>
+        <button id="myClientMessage" onclick="sendMyClientMessage();">Send</button><br/>
+        -------------------------------------------------------------
+        <p id="response"></p>
+    </div>
+</div>
+</body>
+</html>

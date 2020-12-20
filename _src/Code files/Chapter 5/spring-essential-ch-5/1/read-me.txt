@@ -1,0 +1,6 @@
+ mvn clean package   jetty:run  -Djetty.http.port=9090
+
+Use http://localhost:9090/login and try user name and password and see how it redirect to user, admin, and accountant workspace. Try login as user and browse this url after login http://localhost:9090/admin
+and see how redirect to error page.
+
+try to browse http://localhost:9090/adResources/admin and see how it open http basic login popup

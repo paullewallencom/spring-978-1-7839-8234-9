@@ -1,0 +1,22 @@
+ mvn clean package   jetty:run  -Djetty.http.port=9090
+
+Authentication/ Navigation:
+ Use http://localhost:9090/login and try user name and password  (admin/password, accountant/password, operator/password  )  and see how it redirect to user, admin, and accountant workspace.
+
+Authorization:
+   Url access authorization:
+- (logout if you are logggedin ) Try login (http://localhost:9090/login) as user role ( operator/password) and browse this url after login http://localhost:9090/admin and see how redirect to error page.
+
+- (close browser if it is open) Try to browse http://localhost:9090/adResources/admin and see how it open http basic login popup (for the first time) and enter admin/password and see how it let view the resource
+
+   Method authorization:
+    -log in as operator and click migrate user, you get error access page
+    -log in as admin and click migrate user, you get into migrate user page
+
+   Domain object   authorization:
+
+      -log in as operator and click Load operator user data user, you get error access page. come back and click load operator data. you will get into the load user data
+      -(close browser if it is open) login as admin and repeat to see how you can  access user data  for accountant and operator
+
+
+

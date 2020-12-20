@@ -1,0 +1,151 @@
+
+{{#if isLoggedIn}}
+ Welcome <strong>{{loggedInUser.fullName}}</strong>
+{{/if}}
+
+<div class="container">
+{{#if isIdle}}
+ You are idle for {{idleMinutes}} minutes.
+ {{else if isLoggedIn}}
+ Welcome <strong>{{loggedInUser.fullName}}</strong>
+ {{else}}
+  <a {{action showLoginPopup}}>Please login</a>
+{{/if}}
+</div>
+
+
+{{#if}}
+{{else}}
+{{else if}}
+{{unless}}
+{{#each}}
+<div class="container">
+	<h1>List of users</h1>
+
+	<hr />
+	<p class="text-right">
+		<a {{action 'createNewUser'}} class="btn btn-primary" role="button">Create
+			New User
+		</a>
+	</p>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>User name</th>
+				<th>Name</th>
+				<th>Date Of Birth</th>
+				<th>Edit</th>
+				<th>Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each model as |user|}}
+			<tr>
+				<td>
+					<a {{action 'showUser' user }}>{{user.id}}</a>
+				</td>
+				<td>{{user.userName}}</td>
+				<td>{{user.name}}</td>
+				<td>{{format-date user.dateOfBirth format='MMM DD, YYYY'}}</td>
+				<td>
+					<button type="button" class="btn btn-default" aria-label="Edit user" {{action 'editUser' user}}>
+						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+					</button>
+				</td>
+				<td>
+					<button type="button" class="btn btn-default" aria-label="Delete user" {{action 'deleteUser' user}}>
+						<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+					</button>
+				</td>
+			</tr>
+
+			{{/each}} 
+			
+		</tbody>
+	</table>
+</div>
+
+
+{{#modal-window id="userEditModal"}}
+	{{#modal-header}}
+        <button type="button" class="close" {{action "closeEditModal"}} aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id=labelId>{{modalTitle}}</h4>
+	{{/modal-header}}
+	
+	{{#modal-body}}
+				<form>
+					<div class="form-group">
+						<label for="txtName">Full Name:</label>
+						{{input class="form-control" id="txtName" placeholder="Full Name" value=editingUser.name}}
+					</div>
+					<div class="form-group">
+						<label for="txtUserName">User-name:</label>
+						{{input class="form-control" id="txtUserName" placeholder="User Name" value=editingUser.userName}}
+					</div>
+					<div class="form-group">
+						<label for="txtPassword">Password:</label>
+						{{input type="password" class="form-control" id="txtPassword" placeholder="Your secret password" value=editingUser.password}}
+					</div>
+					<div class="form-group">
+						<label for="calDob">Date of Birth:</label>
+						{{bs-datetimepicker id="calDob" date=editingUser.dateOfBirth
+							updateDate=(action (mut editingUser.dateOfBirth)) forceDateOutput=true}}
+					</div>
+						
+				</form>
+	{{/modal-body}}
+	
+	{{#modal-footer}}
+					<a {{action "saveUser"}} class="btn btn-success">Save</a>
+					<a {{action "closeEditModal"}}
+						class="btn btn-primary">Cancel</a>
+					<a {{action 'deleteUser' _editingUser}}
+						class="btn btn-danger">Delete</a>
+       <!--  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button> -->
+	{{/modal-footer}}
+{{/modal-window}}
+
+
+{{#modal-window id="userViewModal"}}
+	{{#modal-header}}
+        <button type="button" class="close" {{action "closeEditModal"}} aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id=labelId>User Details: {{editingUser.name}}</h4>
+	{{/modal-header}}
+	
+	{{#modal-body}}
+				<form>
+					<div class="form-group">
+						<label for="txtName">Full Name:</label>
+						{{editingUser.name}}
+					</div>
+					<div class="form-group">
+						<label for="txtUserName">User-name:</label>
+						{{editingUser.userName}}
+					</div>
+					<div class="form-group">
+						<label for="txtPassword">Password:</label>
+						*******
+					</div>
+					<div class="form-group">
+						<label for="calDob">Date of Birth:</label>
+						{{editingUser.dateOfBirth}}
+					</div>
+						
+				</form>
+	{{/modal-body}}
+	
+	{{#modal-footer}}
+					<a {{action "editUser" _editingUser}} class="btn btn-success">Edit</a>
+					<a {{action "closeViewModal"}}
+						class="btn btn-primary">Cancel</a>
+					<a {{action 'deleteUser' _editingUser}}
+						class="btn btn-danger">Delete</a>
+       <!--  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button> -->
+	{{/modal-footer}}
+{{/modal-window}}
+
+
+{{link-to "Click here to login" "login"}}

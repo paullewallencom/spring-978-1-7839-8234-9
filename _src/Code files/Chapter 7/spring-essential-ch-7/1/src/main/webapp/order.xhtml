@@ -1,0 +1,13 @@
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <h:body>
+       <h3>input: JSF 2 and Spring Integration</h3>
+		<h:form id="orderForm">
+			<h:outputLabel value="Enter order id:" />
+			<h:inputText value="#{orderBean.orderId}" /> <br />
+			<h:commandButton value="Submit" action="#{orderBean.placeAnOrder}"/>
+		</h:form>
+    </h:body>
+</html>

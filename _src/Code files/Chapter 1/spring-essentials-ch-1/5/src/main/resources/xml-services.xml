@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd" default-destroy-method="">
+
+	<bean id="userService" class="com.springessentialsbook.chapter1.service.impl.UserServiceImpl"
+		c:userDAO-ref="userDAO"></bean>
+
+
+	<bean id="xmlTaskService"
+		class="com.springessentialsbook.chapter1.service.impl.XmlDefinedTaskService"
+		init-method="init" destroy-method="cleanup" primary="true">
+		<constructor-arg ref="userService" />
+		<constructor-arg>
+			<bean class="com.springessentialsbook.chapter1.dao.impl.TaskInMemoryDAO"></bean>
+		</constructor-arg>
+	</bean>
+	
+	<!-- 
+	<bean id="taskService"
+		class="com.springessentialsbook.chapter1.service.impl.SimpleTaskService">
+		<property name="userService" ref="userService" />
+		<property name="taskDAO">
+			<ref bean="taskDAO"/>
+		</property>
+	</bean>
+	 -->
+		<bean id="p-taskService"
+		class="com.springessentialsbook.chapter1.service.impl.SimpleTaskService"
+		c:userService-ref="userService"
+		c:taskDAO-ref="taskDAO"/>
+	<bean id="SimpleGreeter" class="com.springessentialsbook.chapter1.service.impl.SimpleGreetingService"></bean>
+	<bean id="BannerService" class="com.springessentialsbook.chapter1.service.BannerService"></bean>
+</beans>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/data/jpa
+    	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+	<context:component-scan base-package="com.springessentials.chapter3" />
+	<util:properties id="postgresql-ds"
+		location="classpath:/postgresql-ds.properties" />
+
+	<bean id="entityManager"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="loadTimeWeaver">
+			<bean
+				class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
+		</property>
+		<property name="persistenceUnitName" value="sePersistenceUnit"></property>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="showSql" value="true" />
+				<property name="generateDdl" value="true" />
+				<property name="database" value="POSTGRESQL" />
+			</bean>
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
+			</props>
+		</property>
+		<!-- Set base package of your entities -->
+		<property name="packagesToScan" value="com.springessentials.chapter3.domain" />
+		<!-- Set share cache mode -->
+		<property name="sharedCacheMode" value="ENABLE_SELECTIVE" />
+		<!-- Set validation mode -->
+		<property name="validationMode" value="NONE" />
+	</bean>
+
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${postgres-ds.driverClassName}" />
+		<property name="url" value="${postgres-ds.url}" />
+		<property name="username" value="${postgres-ds.username}" />
+		<property name="password" value="${postgres-ds.password}" />
+	</bean>
+
+	<jpa:repositories base-package="com.springessentials.chapter3.dao" entity-manager-factory-ref="entityManager"></jpa:repositories>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" />
+
+	<context:property-placeholder location="postgresql-ds.properties" />
+
+</beans>

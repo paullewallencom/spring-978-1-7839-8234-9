@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_RcvaUF94EeWrgsJ6JiBmOQ" name="NewModel">
+  <packagedElement xmi:type="uml:Component" xmi:id="_rpCIEF94EeWrgsJ6JiBmOQ" name="Spring MVC Application">
+    <packagedElement xmi:type="uml:Component" xmi:id="_xeSrQF94EeWrgsJ6JiBmOQ" name="DispatcherServlet"/>
+    <packagedElement xmi:type="uml:Component" xmi:id="_ACIIIF95EeWrgsJ6JiBmOQ" name="HandlerMapping"/>
+    <packagedElement xmi:type="uml:Component" xmi:id="_GE0DUF95EeWrgsJ6JiBmOQ" name="Controller"/>
+    <packagedElement xmi:type="uml:Component" xmi:id="_O2CSQF-CEeWrgsJ6JiBmOQ" name="View Resolver"/>
+    <packagedElement xmi:type="uml:Component" xmi:id="_jcUZwF-CEeWrgsJ6JiBmOQ" name="View"/>
+    <packagedElement xmi:type="uml:Component" xmi:id="_uEEbkF-CEeWrgsJ6JiBmOQ" name="Model"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Node" xmi:id="_XFWMIF95EeWrgsJ6JiBmOQ" name="Spring MVC Application"/>
+  <packagedElement xmi:type="uml:Component" xmi:id="_AkqB4F-DEeWrgsJ6JiBmOQ" name="Browser/Mobile"/>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_SAcjUF-DEeWrgsJ6JiBmOQ" name="HTTP" client="_AkqB4F-DEeWrgsJ6JiBmOQ" supplier="_xeSrQF94EeWrgsJ6JiBmOQ">
+    <ownedComment xmi:id="_zDWRoF-FEeWrgsJ6JiBmOQ" annotatedElement="_SAcjUF-DEeWrgsJ6JiBmOQ">
+      <body>HTTP</body>
+    </ownedComment>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_d5w6sF-DEeWrgsJ6JiBmOQ" client="_xeSrQF94EeWrgsJ6JiBmOQ" supplier="_ACIIIF95EeWrgsJ6JiBmOQ"/>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_iPMp4F-DEeWrgsJ6JiBmOQ" client="_ACIIIF95EeWrgsJ6JiBmOQ" supplier="_GE0DUF95EeWrgsJ6JiBmOQ"/>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_pYwtkF-DEeWrgsJ6JiBmOQ" client="_uEEbkF-CEeWrgsJ6JiBmOQ" supplier="_xeSrQF94EeWrgsJ6JiBmOQ"/>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_uk9ssF-DEeWrgsJ6JiBmOQ" client="_GE0DUF95EeWrgsJ6JiBmOQ" supplier="_uEEbkF-CEeWrgsJ6JiBmOQ"/>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_Lnhc8F-EEeWrgsJ6JiBmOQ" client="_xeSrQF94EeWrgsJ6JiBmOQ" supplier="_O2CSQF-CEeWrgsJ6JiBmOQ"/>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_Pvc7oF-EEeWrgsJ6JiBmOQ" client="_O2CSQF-CEeWrgsJ6JiBmOQ" supplier="_jcUZwF-CEeWrgsJ6JiBmOQ"/>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_Q9GagF-EEeWrgsJ6JiBmOQ" client="_jcUZwF-CEeWrgsJ6JiBmOQ" supplier="_xeSrQF94EeWrgsJ6JiBmOQ"/>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_bDGaIF-EEeWrgsJ6JiBmOQ" name="Renders" client="_xeSrQF94EeWrgsJ6JiBmOQ" supplier="_jcUZwF-CEeWrgsJ6JiBmOQ"/>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_d1PKkF-EEeWrgsJ6JiBmOQ" name="Display" client="_jcUZwF-CEeWrgsJ6JiBmOQ" supplier="_AkqB4F-DEeWrgsJ6JiBmOQ"/>
+</uml:Model>

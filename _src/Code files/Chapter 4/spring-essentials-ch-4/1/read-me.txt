@@ -1,0 +1,4 @@
+mvn spring-boot:run -Dserver.port=8090
+
+
+Now that the service is running, point your browser at http://localhost:8090 (open two or more browser with same url) and click the "Connect" button(for each browser). Upon opening a connection,in a browser enter your text then click "Send". You will see your message broadcasted to all browser

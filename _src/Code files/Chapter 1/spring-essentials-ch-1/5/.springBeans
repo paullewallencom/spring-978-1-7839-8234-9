@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+<<<<<<< HEAD
+	<pluginVersion><![CDATA[3.6.4.201503051146-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+		<config>src/main/resources/application-context.xml</config>
+	</configs>
+	<autoconfigs>
+	</autoconfigs>
+=======
+	<pluginVersion><![CDATA[3.2.0.201303060654-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+	</configs>
+>>>>>>> branch 'master' of https://sameerean@bitbucket.org/sameerean/spring-essentials-ch-1.git
+	<configSets>
+	</configSets>
+</beansProjectDescription>

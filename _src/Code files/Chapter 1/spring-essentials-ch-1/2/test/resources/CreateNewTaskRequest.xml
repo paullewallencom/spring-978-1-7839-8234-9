@@ -1,0 +1,8 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+<CreateTaskRequest>
+	<taskName>Initiate SCRUM Meeting</taskName>
+	<priority>2</priority>
+	<creatorId>1</creatorId>
+	<assigneeId>2</assigneeId>
+	<comments>This is a Test Task via POSTMAN</comments>
+</CreateTaskRequest>

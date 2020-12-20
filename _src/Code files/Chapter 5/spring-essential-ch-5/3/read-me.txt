@@ -1,0 +1,26 @@
+#Run project
+mvn clean package  spring-boot:run -Dserver.contextPath=/myapp  -Dserver.port=9090
+
+#Access unprotected resources
+curl -i http://localhost:9090/myapp/public
+
+#Access protected resources that gives unauthorized error
+curl -i http://localhost:9090/myapp/protected
+
+#Get token
+curl -X POST -vu myClientId:myClientPassword  'http://localhost:9090/myapp/oauth/token?username=operator&password=password&grant_type=password'
+
+#Access protected resources. Replace  [access_token] value with above command result
+#eg: curl -i -H "Authorization: Bearer 602d2dec-5caa-4e91-b00a-55dce8b57e18" http://localhost:9090/myapp/protected
+curl -i -H "Authorization: Bearer [access_token]" http://localhost:9090/myapp/protected
+
+#Refresh token. Replace  [refresh_token] value with above command result
+#eg: curl -X POST  -vu  myClientId:myClientPassword  'http://localhost:9090/myapp/oauth/token?grant_type=refresh_token&refresh_token=f7fb465d-774a-446e-8b3f-71e467b8a54a'
+curl  -X POST  -vu  myClientId:myClientPassword  'http://localhost:9090/myapp/oauth/token?grant_type=refresh_token&refresh_token=[refresh_token]'
+
+
+
+
+
+
+

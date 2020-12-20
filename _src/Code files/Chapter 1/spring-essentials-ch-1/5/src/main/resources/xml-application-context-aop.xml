@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<aop:aspectj-autoproxy />
+
+<import resource="/xml-data-access-objects.xml"/>
+<import resource="/xml-services.xml"/>
+
+<bean class="com.springessentialsbook.chapter1.boot.DataLoader" init-method="run"
+	c:userService-ref="userService" c:taskService-ref="xmlTaskService"></bean>
+
+	<bean id="systemSettings" class="com.springessentialsbook.chapter1.settings.SystemSettings">
+<!--
+ 		<constructor-arg index="0" type="int" value="5"/>
+		<constructor-arg index="1" type="java.lang.String" value="dd/mm/yyyy"/>
+		<constructor-arg index="2" type="java.lang.String" value="Taskify!"/>
+ -->		
+ 		<constructor-arg value="5"/>
+		<constructor-arg value="dd/mm/yyyy"/>
+		<constructor-arg value="Taskify!"/>
+		<constructor-arg value="admin@taskify.com"/>
+	</bean>
+<!--
+	<bean id="systemSettings" class="com.springessentialsbook.chapter1.settings.SystemSettings">
+ 		<property name="openUserTasksMaxLimit" value="5"/>
+ 		<property name="systemDateFormat" value="dd/mm/yyyy"/>
+ 		<property name="appDisplayName" value="Taskify!"/>
+	</bean>
+	<bean id="p-systemSettings" class="com.springessentialsbook.chapter1.settings.SystemSettings"
+		p:openUserTasksMaxLimit="5"
+ 		p:systemDateFormat="dd/mm/yyyy"
+ 		p:appDisplayName="Taskify!"/>
+	-->
+		
+		<aop:config>
+		<aop:aspect id="audLogAspect" ref="auditLoggerAspect">
+
+<!-- 
+			<aop:pointcut id="profileFindMethods"
+				expression="execution(* com.springessentialsbook.chapter1.service.**.find*(..))" />
+				-->
+			<aop:around pointcut="execution(* com.springessentialsbook.chapter1.service.**.find*(..))" method="profileServieFindAdvice"/>
+		</aop:aspect>
+	</aop:config>
+	<bean id="auditLoggerAspect" class="com.springessentialsbook.chapter1.aop.AuditLoggerAspect" />
+	
+</beans>

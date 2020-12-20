@@ -1,0 +1,6 @@
+Run following to run application:
+ mvn clean package   jetty:run  -Djetty.http.port=9090
+Browse 
+http://localhost:9090/order
+ and enter a number or string and submit, if non blanked data entered,
+it will be forwarded to success page, otherwise it goes to error page.

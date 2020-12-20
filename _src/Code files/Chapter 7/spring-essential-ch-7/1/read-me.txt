@@ -1,0 +1,4 @@
+Run following command: 
+mvn clean package   jetty:run  -Djetty.http.port=9090
+Browse following, enter an order number and submit, then it goes to confirmation page
+http://localhost:9090/order.xhtml
